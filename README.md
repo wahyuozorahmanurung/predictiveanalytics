@@ -75,7 +75,7 @@ dan menghilangkan data duplikat
 
 ![image](https://github.com/user-attachments/assets/54b8daf9-05b5-4db7-949d-5f645cc70ab9)
 
--Pendeteksian Outlier: Menggunakan metode IQR pada fitur numerik (StudyTimeWeekly, Absences, dan GPA) untuk mendeteksi nilai ekstrem.
+- Pendeteksian Outlier: Menggunakan metode IQR pada fitur numerik (StudyTimeWeekly, Absences, dan GPA) untuk mendeteksi nilai ekstrem.
 ![image](https://github.com/user-attachments/assets/7c34242e-527b-43e4-b694-20691d1db8ae)
 Variabel numerik seperti GPA, StudyTimeWeekly, dan Absences diperiksa menggunakan metode IQR untuk mengidentifikasi nilai-nilai ekstrem. Outlier ini divisualisasikan melalui boxplot untuk membantu pengambilan keputusan apakah akan dihapus atau dipertahankan dalam pemodelan.
 
@@ -231,19 +231,62 @@ Berikut adalah tabel Kelebihan dan Kekurangan dari ketiga algoritma:
 | **Support Vector Machine (SVM)** | - Efektif untuk dataset berdimensi tinggi. <br> - Dapat bekerja dengan baik pada margin sempit antar kelas. <br> - Dapat menangani non-linearitas dengan kernel trick |- Waktu pelatihan lebih lama, terutama pada dataset besar.<br> - Sulit diinterpretasikan. <br> - performa menurun jika fitur tidak disesuaikan (scaling wajib).
 
 
-
-
 ## Evaluation
-Pada bagian ini anda perlu menyebutkan metrik evaluasi yang digunakan. Lalu anda perlu menjelaskan hasil proyek berdasarkan metrik evaluasi yang digunakan.
+Setelah membangun model klasifikasi untuk memprediksi status kelulusan mahasiswa, langkah penting selanjutnya adalah mengevaluasi performa model dengan menggunakan metrik yang sesuai. Karena permasalahan ini merupakan klasifikasi biner (lulus atau tidak lulus), maka metrik evaluasi yang digunakan adalah:
+- Accuracy
+- Precision
+- Recall
+- F1-Score
+  
+A. Accuracy (Akurasi)
+Akurasi mengukur proporsi prediksi yang benar terhadap seluruh data. Formula akurasi adalah:
 
-Sebagai contoh, Anda memiih kasus klasifikasi dan menggunakan metrik **akurasi, precision, recall, dan F1 score**. Jelaskan mengenai beberapa hal berikut:
-- Penjelasan mengenai metrik yang digunakan
-- Menjelaskan hasil proyek berdasarkan metrik evaluasi
+$$
+ \text{Accuracy} = \frac{TP + TN}{TP + TN + FP + FN}
+$$
 
-Ingatlah, metrik evaluasi yang digunakan harus sesuai dengan konteks data, problem statement, dan solusi yang diinginkan.
+Di mana:
+- TP = True Positive (prediksi lulus dan benar)
+- TN = True Negative (prediksi tidak lulus dan benar)
+- FP = False Positive (diprediksi lulus tapi tidak lulus)
+- FN = False Negative (diprediksi tidak lulus padahal lulus)
 
-**Rubrik/Kriteria Tambahan (Opsional)**: 
-- Menjelaskan formula metrik dan bagaimana metrik tersebut bekerja.
+Akurasi baik digunakan jika distribusi kelas seimbang, namun bisa menyesatkan jika kelas tidak seimbang.
+
+B. Precision
+Precision mengukur berapa proporsi prediksi positif (lulus) yang benar-benar tepat.
+
+$$
+ \text{Precision} = \frac{TP}{TP + FP}
+$$
+
+Metrik ini penting ketika kesalahan false positive harus dikurangi, misalnya memprediksi seseorang lulus padahal tidak.
+
+C. Recall (Sensitivity)
+Recall menunjukkan berapa banyak dari seluruh mahasiswa yang benar-benar lulus berhasil diprediksi dengan benar.
+
+$$
+ \text{Recall} = \frac{TP}{TP + FN}
+$$
+
+Metrik ini penting untuk menghindari mahasiswa yang sebenarnya berisiko tidak lulus tapi tidak terdeteksi.
+
+D. F1-Score
+F1 Score merupakan harmonisasi antara precision dan recall.
+
+$$
+ \text{F1 Score} = 2 \times \frac{\text{Precision} \times \text{Recall}}{\text{Precision} + \text{Recall}}
+$$
+
+Berguna saat kita ingin keseimbangan antara FP dan FN.
+
+**Hasil Evaluasi Model**
+Setelah dilakukan pelatihan dan pengujian model terhadap data, diperoleh hasil sebagai berikut:
+|  **Model**  | **Accuracy** | **Precision** | **Recal**  | **F1-Score**  | 
+|-------------|--------------|---------------|------------|---------------|
+|  Decision Tree C4.5 | 	0.918 | 0.93 | 0.87  | 0.90  | 
+|  Random Forest | 		0.927 | 0.94 | 0.88  | 0.91  | 
+|  Support Vector Machine (SVM) | 		0.902 | 0.89 | 	0.85 | 0.87  | 
 
 **---Ini adalah bagian akhir laporan---**
 
