@@ -282,11 +282,28 @@ Berguna saat kita ingin keseimbangan antara FP dan FN.
 
 **Hasil Evaluasi Model**
 Setelah dilakukan pelatihan dan pengujian model terhadap data, diperoleh hasil sebagai berikut:
-|  **Model**  | **Accuracy** | **Precision** | **Recal**  | **F1-Score**  | 
+|  **Model**  | **Accuracy** | **Precision Kelas 1** | **Recal Kelas 1**  | **F1-Score Kelas 1**  | 
 |-------------|--------------|---------------|------------|---------------|
-|  Decision Tree C4.5 | 	0.918 | 0.93 | 0.87  | 0.90  | 
-|  Random Forest | 		0.927 | 0.94 | 0.88  | 0.91  | 
-|  Support Vector Machine (SVM) | 		0.902 | 0.89 | 	0.85 | 0.87  | 
+|  Decision Tree C4.5 | 	0.9499 | 	0.97 | 0.87  | 0.92  | 
+|  Random Forest | 		0.9520 | 	0.97 | 0.88  | 0.92  | 
+|  Support Vector Machine (SVM) | 		0.9290 | 0.90 | 	0.88 | 0.89  | 
+
+Penjelasan:
+Berdasarkan hasil evaluasi dari notebook, Random Forest tetap menjadi model terbaik dengan akurasi 95.2%, precision 0.97, dan recall 0.88 untuk kelas “lulus”. Decision Tree C4.5 juga menunjukkan performa sangat baik dengan akurasi 94.9%, sementara SVM sedikit di bawah dengan akurasi 92.9%. Semua model memiliki f1-score yang tinggi, tetapi Random Forest memberikan kombinasi terbaik antara akurasi dan stabilitas klasifikasi.
+
+**Confusion Matrix**
+
+![image](https://github.com/user-attachments/assets/fa1510b9-bcb8-43f7-830f-cb22f1e69981)
+
+Gambar berikut menampilkan confusion matrix dari ketiga model:
+- Decision Tree C4.5: TP = 134, TN = 321, FP = 4, FN = 20
+- Random Forest: TP = 135, TN = 321, FP = 4, FN = 19
+- SVM: TP = 135, TN = 310, FP = 15, FN = 19
+
+Interpretasi
+- Random Forest memiliki performa terbaik secara keseluruhan. Akurasi tertinggi (95.2%), precision dan recall seimbang, serta jumlah kesalahan paling sedikit (hanya 4 false positive dan 19 false negative).
+- Decision Tree C4.5 hampir setara dengan Random Forest, hanya selisih satu false negative lebih banyak.
+- SVM memiliki akurasi lebih rendah (92.9%) dan jumlah false positive yang lebih tinggi (15), artinya model ini lebih sering mengira mahasiswa akan lulus padahal tidak.
 
 **---Ini adalah bagian akhir laporan---**
 
