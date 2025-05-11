@@ -68,6 +68,7 @@ Dataset ini menyajikan informasi lengkap tentang karakteristik mahasiswa yang me
 
 Beberapa tahapan eksplorasi data telah dilakukan untuk memahami karakteristik dataset, antara lain:
 - Dataset dicek secara menyeluruh dan ditemukan bahwa tidak ada nilai yang hilang maupun data yang duplikat. Ini menunjukkan bahwa data dalam kondisi baik untuk digunakan dalam pemodelan tanpa perlu imputasi atau pembersihan lanjutan.
+
 ![image](https://github.com/user-attachments/assets/9e22b950-2a3f-4f5f-a8ff-104fd8bfc639)
   
 dan menghilangkan data duplikat
@@ -156,10 +157,81 @@ Tahapan modeling bertujuan untuk membangun model prediktif yang dapat menentukan
 - Support Vector Machine (SVM).
 Setiap algoritma diuji menggunakan stratified train-test split (80:20) dan dilakukan tuning hyperparameter menggunakan GridSearchCV untuk menemukan parameter optimal yang menghasilkan akurasi terbaik.
 
-**Rubrik/Kriteria Tambahan (Opsional)**: 
-- Menjelaskan kelebihan dan kekurangan dari setiap algoritma yang digunakan.
-- Jika menggunakan satu algoritma pada solution statement, lakukan proses improvement terhadap model dengan hyperparameter tuning. **Jelaskan proses improvement yang dilakukan**.
-- Jika menggunakan dua atau lebih algoritma pada solution statement, maka pilih model terbaik sebagai solusi. **Jelaskan mengapa memilih model tersebut sebagai model terbaik**.
+1. Decision Tree C4.5 – Parameter dan Tuning
+   Model Decision Tree C4.5 dibangun menggunakan algoritma DecisionTreeClassifier dari pustaka Scikit-Learn. Untuk menghasilkan model yang optimal dan tidak overfitting, dilakukan proses hyperparameter tuning menggunakan GridSearchCV dengan beberapa kombinasi parameter penting.
+```python
+   param_grid = {
+    'criterion': ['entropy'],
+    'splitter': ['best'],
+    'max_depth': [3, 5, 10, 15, None],
+    'min_samples_split': [2, 5, 10, 20],
+    'min_samples_leaf': [1, 2, 5, 10],
+    'max_features': [None, 'sqrt', 'log2'],
+    'class_weight': ['balanced'],
+    'ccp_alpha': [0.0, 0.01, 0.05]
+}
+```
+> criterion='entropy' digunakan untuk mengukur kualitas pemisahan menggunakan informasi gain, sesuai dengan karakteristik C4.5 yang berbasis pada entropi.
+> splitter='best' mengarahkan algoritma untuk memilih pemisahan terbaik pada setiap node.
+> max_depth disesuaikan dalam beberapa pilihan seperti 3, 5, 10, 15, hingga None (tanpa batas), untuk menguji kedalaman pohon yang paling optimal. Semakin dalam pohon, semakin kompleks modelnya.
+> min_samples_split dan min_samples_leaf mengontrol jumlah minimum sampel yang diperlukan untuk memisahkan node dan membentuk daun. Nilai seperti 2, 5, 10, dan 20 diuji untuk mencegah pembelahan yang terlalu agresif dan mengurangi overfitting.
+> max_features mengatur jumlah fitur yang dipertimbangkan saat mencari pemisahan terbaik. Pengaturan seperti None, 'sqrt', dan 'log2' diuji untuk meningkatkan keragaman dalam pemisahan fitur.
+> class_weight='balanced' digunakan untuk menyesuaikan bobot kelas jika terjadi ketidakseimbangan antara kelas lulus dan tidak lulus.
+> Terakhir, ccp_alpha digunakan sebagai parameter pruning post-training (cost-complexity pruning), dengan nilai 0.0, 0.01, dan 0.05 untuk mengurangi kompleksitas pohon dan mencegah overfitting.
+Proses tuning dilakukan dengan 5-fold cross-validation menggunakan metrik accuracy sebagai skor utama, untuk memilih kombinasi parameter terbaik yang memberikan generalisasi terbaik di data uji.
+
+2. Random Forest
+  Model Random Forest adalah metode ensemble learning yang membangun banyak pohon keputusan dan menggabungkan hasilnya. Untuk model ini digunakan RandomForestClassifier, dan dilakukan hyperparameter tuning   untuk menyesuaikan performa dan stabilitas.
+```python
+param_grid = {
+    'n_estimators': [50, 100],
+    'criterion': ['gini'],
+    'max_depth': [5, 10],
+    'min_samples_split': [2],
+    'min_samples_leaf': [1, 2],
+    'max_features': ['sqrt'],
+    'class_weight': ['balanced']
+}
+```
+> n_estimators adalah jumlah pohon dalam hutan. Nilai yang diuji adalah 50 dan 100. Semakin banyak pohon, biasanya semakin akurat model, namun juga lebih lambat secara komputasi.
+> criterion='gini' digunakan untuk mengukur impurity di setiap node. Gini Impurity adalah metode yang umum digunakan karena komputasinya lebih cepat dari entropy.
+> max_depth dibatasi pada 5 dan 10 untuk mencegah pembentukan pohon yang terlalu dalam dan kompleks, yang dapat menyebabkan overfitting.
+> min_samples_split=2 adalah nilai default minimum jumlah sampel untuk memisahkan node. Ini membantu menjaga kedalaman pohon agar tidak terlalu tinggi.
+> min_samples_leaf diuji dengan nilai 1 dan 2, untuk memastikan bahwa setiap daun memiliki cukup data yang mewakili distribusi target.
+> max_features='sqrt' digunakan agar pada setiap pembentukan node, hanya subset akar kuadrat dari jumlah total fitur yang dipertimbangkan. Ini meningkatkan keragaman antar pohon dan mencegah korelasi antar fitur.
+> class_weight='balanced' digunakan agar model memperhatikan ketidakseimbangan antara kelas lulus dan tidak lulus.
+
+Tuning dilakukan menggunakan GridSearchCV dengan 5-fold cross-validation, di mana hasil menunjukkan bahwa Random Forest lebih stabil dan memberikan akurasi tertinggi dibanding model lain.
+
+3. Support Vector Machine (SVM)
+   Model SVM (Support Vector Machine) dibangun dengan menggunakan kelas SVC() dari Scikit-Learn. Karena SVM sangat sensitif terhadap skala data dan parameter, dilakukan hyperparameter tuning untuk menyesuaikan dengan karakteristik data.
+```python
+   param_grid = {
+    'C': [0.1, 1, 10, 100],
+    'kernel': ['linear', 'rbf', 'poly', 'sigmoid'],
+    'gamma': ['scale', 'auto']
+}
+```
+
+> C adalah parameter regularisasi yang mengontrol keseimbangan antara klasifikasi sempurna data pelatihan dan margin maksimum. Nilai yang diuji adalah 0.1, 1, 10, dan 100. Nilai C kecil membuat margin lebih lebar (lebih toleran terhadap kesalahan), sedangkan nilai besar mencoba mengklasifikasikan semua data pelatihan dengan benar.
+> kernel menentukan jenis fungsi kernel yang digunakan untuk memproyeksikan data ke dimensi yang lebih tinggi. Kernel yang diuji meliputi 'linear', 'rbf', 'poly', dan 'sigmoid'.
+> gamma adalah koefisien kernel untuk kernel 'rbf', 'poly', dan 'sigmoid'. Nilai 'scale' dan 'auto' diuji. Gamma menentukan jangkauan pengaruh satu titik data—gamma tinggi menyebabkan model lebih fokus pada titik-titik dekat (berisiko overfitting), sedangkan gamma rendah membuat model lebih umum.
+
+Karena SVM membutuhkan data yang ternormalisasi, seluruh fitur numerik telah diskalakan menggunakan MinMaxScaler sebelumnya. Setelah tuning, SVM memberikan performa baik, namun dengan sedikit peningkatan kesalahan klasifikasi negatif.
+
+**Kelebihan dan Kekurangan Setiap Algoritma**
+
+
+Berikut adalah tabel Kelebihan dan Kekurangan dari ketiga algoritma:
+
+| **Model**               | **Kelebihan**                                                                                                                  | **Kekurangan**                                       | 
+|-------------------------|------------------------------------------------------------------------------------------------------------------------------- | -----------------------------------------------------|
+| **Decision Tree C4.5**  |- Mudah diinterpretasikan dan divisualisasikan. <br> - Dapat menangani data numerik dan kategorikal. <br> - Cepat dilatih dan dieksekusi. | - Cenderung overfitting, terutama pada dataset yang kompleks. <br> - Performa menurun jika tidak dilakukan pruning atau tuning.
+| **Random Forest**       |- Lebih stabil dan akurat daripada decision tree tunggal. <br> - Tahan terhadap overfitting karena menggunakan banyak pohon. <br> -Mampu menangani data yang tidak seimbang. | - Waktu pelatihan dan prediksi lebih lama dibanding decision tree. <br> Kurang mudah untuk diinterpretasikan (sebagai model ensemble).
+| **Support Vector Machine (SVM)** | - Efektif untuk dataset berdimensi tinggi. <br> - Dapat bekerja dengan baik pada margin sempit antar kelas. <br> - Dapat menangani non-linearitas dengan kernel trick |- Waktu pelatihan lebih lama, terutama pada dataset besar.<br> - Sulit diinterpretasikan. <br> - performa menurun jika fitur tidak disesuaikan (scaling wajib).
+
+
+
 
 ## Evaluation
 Pada bagian ini anda perlu menyebutkan metrik evaluasi yang digunakan. Lalu anda perlu menjelaskan hasil proyek berdasarkan metrik evaluasi yang digunakan.
