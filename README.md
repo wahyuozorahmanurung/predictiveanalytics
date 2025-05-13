@@ -5,9 +5,15 @@
 ## Domain Proyek: Pendidikan
 
 ### Latar Belakang
-Kelulusan tepat waktu merupakan indikator penting dalam mengevaluasi kualitas pendidikan tinggi. Namun, banyak institusi kesulitan mendeteksi mahasiswa yang berisiko tidak lulus karena keterbatasan sistem pemantauan. Dengan meningkatnya ketersediaan data akademik, metode machine learning menjadi solusi potensial dalam memprediksi kelulusan secara lebih akurat dan efisien.
-Beberapa studi menunjukkan bahwa algoritma seperti Decision Tree dan Random Forest efektif dalam mengklasifikasikan status kelulusan berdasarkan data seperti GPA, kehadiran, waktu belajar, dan latar belakang sosial. Penelitian oleh Saki (2023) serta Kim et al. (2023) mendemonstrasikan bahwa penerapan model prediktif dapat membantu institusi melakukan intervensi dini untuk meningkatkan tingkat kelulusan mahasiswa.
-Oleh karena itu, proyek ini mengembangkan sistem prediksi kelulusan menggunakan machine learning guna mendukung pengambilan keputusan akademik yang lebih strategis dan responsif.
+Tingkat kelulusan mahasiswa merupakan indikator utama dalam menilai kualitas dan efektivitas institusi pendidikan tinggi. Di Indonesia, pencapaian akreditasi institusi sangat dipengaruhi oleh rasio kelulusan tepat waktu, yang mencerminkan efisiensi proses pembelajaran dan keberhasilan akademik mahasiswa. Namun, banyak perguruan tinggi masih menghadapi tantangan dalam mengidentifikasi mahasiswa yang berisiko tidak lulus tepat waktu, terutama karena keterbatasan dalam sistem pemantauan dan intervensi dini.
+
+Seiring dengan meningkatnya ketersediaan data akademik dan kemajuan dalam bidang data science, pendekatan berbasis machine learning telah menjadi solusi potensial untuk memprediksi kelulusan mahasiswa. Teknik ini memungkinkan analisis terhadap berbagai faktor, seperti prestasi akademik, kehadiran, latar belakang sosial-ekonomi, dan aktivitas ekstrakurikuler, guna mengidentifikasi pola yang memengaruhi kelulusan.
+
+Beberapa penelitian telah menunjukkan efektivitas penggunaan algoritma machine learning dalam memprediksi kelulusan mahasiswa. Misalnya, studi oleh Saki (2023) mengembangkan model prediktif menggunakan algoritma decision tree dan random forest untuk mengklasifikasikan status kelulusan mahasiswa berdasarkan data akademik dan non-akademik. Hasilnya menunjukkan bahwa model tersebut dapat membantu institusi pendidikan dalam mengidentifikasi mahasiswa yang memerlukan intervensi dini.
+
+Selain itu, penelitian oleh Kim et al. (2023) menggunakan berbagai teknik machine learning untuk menganalisis faktor-faktor yang berkontribusi terhadap risiko mahasiswa tidak lulus, seperti data akademik, demografi, dan sosial-ekonomi. Studi ini menekankan pentingnya data akademik dalam meningkatkan akurasi prediksi kelulusan.
+
+Dengan memanfaatkan pendekatan ini, institusi pendidikan dapat mengembangkan sistem prediktif yang membantu dalam pengambilan keputusan strategis, seperti penyusunan program bimbingan akademik, penyesuaian kurikulum, dan alokasi sumber daya. Hal ini tidak hanya meningkatkan tingkat kelulusan, tetapi juga memperkuat reputasi institusi dan memenuhi standar akreditasi nasional.
 
 ### Referensi
 A. Saki, Student Graduation Result Prediction, 2023. , S. Kim, E. Yoo, & S. Kim, Why Do Students Drop Out?, arXiv:2310.10987, 2023. [https://arxiv.org/abs/2310.10987], Polinela Research Team. (2023). Student Graduation Prediction Using Machine Learning Algorithms. Jurnal Routers, 10(2), 45-56. [https://jurnal.polinela.ac.id/routers/article/view/3897]
