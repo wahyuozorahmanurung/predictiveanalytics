@@ -1,4 +1,4 @@
- # predictiveanalytics
+# Predictiveanalytics
 
 # Laporan Proyek Machine Learning - Wahyu Ozorah Manurung
 
@@ -81,14 +81,15 @@ Variabel numerik seperti GPA, StudyTimeWeekly, dan Absences diperiksa menggunaka
 
 - Visualisasi Distribusi Kelas: Histogram dan boxplot menunjukkan hubungan antara waktu belajar, absensi, dan GPA dengan nilai akhir.
   ![image](https://github.com/user-attachments/assets/7e74cf50-1e9c-42ca-bf3a-82bac18a4283) , ![image](https://github.com/user-attachments/assets/067fa384-a5ee-472c-b3fa-29b6740d0792)
-  Visualisasi berupa histogram dan countplot digunakan untuk menampilkan distribusi GradeClass dan GraduationStatus. Hasil menunjukkan bahwa sebagian besar mahasiswa lulus, namun masih terdapat proporsi signifikan yang tidak lulus.
+
+  Visualisasi berupa histogram dan boxplot digunakan untuk menampilkan distribusi GradeClass dan GraduationStatus. Hasil menunjukkan bahwa sebagian besar mahasiswa lulus, namun masih terdapat proporsi signifikan yang tidak lulus.
   
 - Heatmap Korelasi: Mengungkap bahwa GPA dan Absences memiliki korelasi tertinggi terhadap status kelulusan.
   ![image](https://github.com/user-attachments/assets/9a1dcb0b-a691-4b0c-830e-b124df147698)
   Analisis korelasi menunjukkan bahwa GPA dan Absences memiliki hubungan paling kuat terhadap variabel target GraduationStatus. Ini menandakan bahwa performa akademik dan tingkat kehadiran adalah faktor utama yang memengaruhi kelulusan.
 
 ## Data Preparation
-data preparation sangat penting dalam pipeline machine learning karena memastikan data dalam kondisi bersih, terstruktur, dan siap digunakan oleh algoritma untuk pelatihan dan prediksi. Proses ini dilakukan secara bertahap dan sistematis agar menghasilkan model yang akurat dan dapat diinterpretasikan dengan baik.
+Data preparation sangat penting dalam pipeline machine learning karena memastikan data dalam kondisi bersih, terstruktur, dan siap digunakan oleh algoritma untuk pelatihan dan prediksi. Proses ini dilakukan secara bertahap dan sistematis agar menghasilkan model yang akurat dan dapat diinterpretasikan dengan baik.
 
 1. Memeriksa Struktur Data dan Informasi Umum
    Langkah pertama dilakukan dengan fungsi df.info() dan df.isnull().sum() untuk memahami tipe data dan memastikan tidak ada nilai yang hilang (missing value). Selain itu, dilakukan pengecekan duplikasi     menggunakan df.duplicated().
@@ -288,6 +289,9 @@ Setelah dilakukan pelatihan dan pengujian model terhadap data, diperoleh hasil s
 |  Random Forest | 		0.9520 | 	0.97 | 0.88  | 0.92  | 
 |  Support Vector Machine (SVM) | 		0.9290 | 0.90 | 	0.88 | 0.89  | 
 
+![image](https://github.com/user-attachments/assets/36f702c2-0702-4d46-8a5b-0fcface8bcf7)
+
+
 Penjelasan:
 Berdasarkan hasil evaluasi dari notebook, Random Forest tetap menjadi model terbaik dengan akurasi 95.2%, precision 0.97, dan recall 0.88 untuk kelas “lulus”. Decision Tree C4.5 juga menunjukkan performa sangat baik dengan akurasi 94.9%, sementara SVM sedikit di bawah dengan akurasi 92.9%. Semua model memiliki f1-score yang tinggi, tetapi Random Forest memberikan kombinasi terbaik antara akurasi dan stabilitas klasifikasi.
 
@@ -305,9 +309,102 @@ Interpretasi
 - Decision Tree C4.5 hampir setara dengan Random Forest, hanya selisih satu false negative lebih banyak.
 - SVM memiliki akurasi lebih rendah (92.9%) dan jumlah false positive yang lebih tinggi (15), artinya model ini lebih sering mengira mahasiswa akan lulus padahal tidak.
 
-**---Ini adalah bagian akhir laporan---**
+**Precision, Recall, F1-Score**
+- Decision Tree C4.5: Precision (kelas 1): 0.97, Recall (kelas 1): 0.87, F1-Score (kelas 1): 0.92
+- Random Forest: Precision (kelas 1): 0.97, Recall (kelas 1): 0.88, F1-Score (kelas 1): 0.92
+- SVM:Precision (kelas 1): 0.90, Recall (kelas 1): 0.88, F1-Score (kelas 1): 0.89
+  
+![image](https://github.com/user-attachments/assets/c8632880-b407-40bd-bc7b-307a2758c0bc)
 
-_Catatan:_
-- _Anda dapat menambahkan gambar, kode, atau tabel ke dalam laporan jika diperlukan. Temukan caranya pada contoh dokumen markdown di situs editor [Dillinger](https://dillinger.io/), [Github Guides: Mastering markdown](https://guides.github.com/features/mastering-markdown/), atau sumber lain di internet. Semangat!_
-- Jika terdapat penjelasan yang harus menyertakan code snippet, tuliskan dengan sewajarnya. Tidak perlu menuliskan keseluruhan kode project, cukup bagian yang ingin dijelaskan saja.
+
+**Model Terbaik: Random Forest**
+Berdasarkan hasil evaluasi model yang telah dilakukan melalui metrik klasifikasi (akurasi, precision, recall, dan f1-score) serta analisis confusion matrix, model Random Forest ditetapkan sebagai model terbaik dalam proyek ini.
+
+**Alasan Pemilihan Random Forest**
+
+1. Kinerja Evaluasi Terbaik Secara Konsisten
+Model Random Forest mencapai akurasi tertinggi sebesar 95.20%, sedikit di atas Decision Tree C4.5 (94.99%) dan jauh di atas SVM (92.90%). Selain akurasi, model ini juga menghasilkan nilai precision 0.97, recall 0.88, dan f1-score 0.92 untuk kelas “lulus”, yang mencerminkan keseimbangan yang sangat baik antara menghindari false positives dan false negatives. Ini penting dalam konteks pendidikan, karena meminimalkan kesalahan dalam memprediksi kelulusan siswa sangat krusial.
+
+2. Minim Kesalahan Kritis
+Melalui confusion matrix, Random Forest hanya menghasilkan 4 false positive (mahasiswa diprediksi lulus padahal tidak) dan 19 false negative (mahasiswa diprediksi tidak lulus padahal lulus). Angka ini sangat rendah dan lebih baik daripada SVM, yang menghasilkan 15 false positive, berpotensi memberikan harapan kelulusan yang keliru.
+
+3. Lebih Stabil dan Tahan Terhadap Overfitting
+Berbeda dengan Decision Tree tunggal yang cenderung overfitting pada data pelatihan, Random Forest merupakan model ensemble yang membentuk banyak pohon keputusan dan menggabungkan hasilnya untuk meningkatkan generalisasi. Hal ini menghasilkan prediksi yang lebih stabil dan tahan terhadap fluktuasi data.
+
+4. Kemampuan Menangani Fitur yang Beragam
+Dataset yang digunakan mencakup berbagai jenis fitur, baik numerik seperti GPA dan Absences, maupun kategorikal seperti Tutoring dan ParentalEducation. Random Forest mampu mengelola kombinasi fitur ini secara efisien tanpa perlu banyak pra-proses kompleks, menjadikannya fleksibel untuk berbagai jenis input.
+
+5. Memungkinkan Interpretasi Melalui Feature Importance
+Selain akurasi, Random Forest juga memungkinkan dilakukannya analisis feature importance, yang memberikan wawasan berharga tentang faktor-faktor paling berpengaruh terhadap kelulusan. Ini sangat berguna bagi pengambil kebijakan di institusi pendidikan dalam menyusun strategi intervensi berbasis data.
+
+**Evaluasi Terhadap Business Understanding**
+
+✅ Menjawab Problem Statement
+
+Bagaimana memprediksi status kelulusan mahasiswa berdasarkan data akademik dan non-akademik?
+- Telah berhasil dibangun model klasifikasi menggunakan Random Forest dengan akurasi tinggi (95.2%) yang mampu memprediksi kelulusan mahasiswa (lulus atau tidak lulus) berdasarkan enam fitur input utama. Evaluasi dengan confusion matrix dan metrik klasifikasi menunjukkan bahwa model ini dapat mengidentifikasi mahasiswa berisiko dengan kesalahan minimum.
+
+Fitur apa yang paling berpengaruh terhadap kelulusan mahasiswa?
+- Berdasarkan Feature Importance dari model Random Forest (terlihat pada grafik), ditemukan bahwa fitur GPA memiliki kontribusi paling besar terhadap prediksi kelulusan, disusul oleh Absences (jumlah ketidakhadiran) dan StudyTimeWeekly (waktu belajar per minggu). Faktor lain seperti pendidikan orang tua, tutoring, dan volunteering memiliki pengaruh yang jauh lebih kecil.
+
+Model machine learning mana yang paling akurat dan sesuai digunakan?
+- Setelah dibandingkan dengan Decision Tree C4.5 dan SVM, model Random Forest dipilih sebagai yang terbaik karena konsisten unggul dalam semua metrik evaluasi utama, serta memberikan hasil yang lebih stabil dan generalisasi lebih baik.
+
+🎯 Mencapai Goals
+Membangun model prediksi kelulusan mahasiswa
+- Tujuan ini telah dicapai dengan baik menggunakan model Random Forest, yang mampu memberikan prediksi akurat terhadap status kelulusan mahasiswa pada data uji.
+
+Mengidentifikasi variabel yang paling berpengaruh
+- Tujuan ini dicapai melalui analisis feature importance. Hasil menunjukkan bahwa GPA dan Absences adalah dua indikator paling penting dalam menentukan kelulusan, memberikan insight yang relevan bagi kebijakan akademik.
+
+Membandingkan beberapa algoritma klasifikasi
+- Tiga algoritma diuji dan dibandingkan secara adil menggunakan GridSearchCV. Random Forest unggul secara konsisten dan dipilih sebagai model final.
+
+📈 Dampak dari Solution Statement
+
+Solution statement yang diajukan sebelumnya menyebutkan bahwa proyek akan menggunakan beberapa algoritma (Decision Tree C4.5, Random Forest, dan SVM) serta melakukan hyperparameter tuning untuk meningkatkan performa model dan memilih solusi terbaik berdasarkan evaluasi metrik.
+
+Hasilnya:
+
+Random Forest memang menjadi solusi terbaik dengan kinerja paling optimal.
+Proses GridSearchCV berhasil meningkatkan akurasi model melalui pemilihan parameter yang tepat (misalnya: n_estimators=50, max_depth=10, class_weight='balanced').
+Insight dari feature importance memungkinkan stakeholder seperti dosen, kaprodi, atau biro akademik untuk lebih fokus pada peningkatan GPA mahasiswa dan menurunkan angka absensi, karena kedua faktor ini terbukti paling berpengaruh terhadap kelulusan.
+
+Secara keseluruhan, proyek ini berhasil menjawab semua pertanyaan kunci bisnis, mencapai semua tujuan analisis, dan memberikan solusi terukur dan bisa diimplementasikan. Selain menyediakan model prediksi, proyek ini juga menawarkan insight nyata yang bisa dijadikan dasar dalam penyusunan kebijakan akademik berbasis data.
+
+## Kesimpulan
+![image](https://github.com/user-attachments/assets/f5a9c0e3-593b-4802-aa3e-0c723003e4ef)
+
+GPA dan absensi adalah faktor paling berpengaruh dalam prediksi. Waktu belajar memiliki dampak sedang. Pendidikan orang tua, bimbingan, dan sukarela kurang signifikan.
+
+![image](https://github.com/user-attachments/assets/86a8bd97-b0de-4c8c-83fa-38f5dd3a4c5a)
+
+**insight:** 
+
+- Mahasiswa dengan GPA lebih tinggi memiliki peluang lebih besar untuk lulus.
+- Sebagian besar mahasiswa yang tidak lulus memiliki GPA rendah, menunjukkan bahwa GPA merupakan faktor penting dalam keberhasilan akademik.
+Meningkatkan GPA melalui bimbingan belajar, mentoring, atau program peningkatan akademik bisa menjadi strategi efektif untuk meningkatkan tingkat kelulusan.
+
+![image](https://github.com/user-attachments/assets/1291fcf5-1d82-4ed8-810b-a6cd7f5fe07b)
+
+**insight:**
+
+Mahasiswa yang memiliki banyak absensi cenderung memiliki tingkat kelulusan lebih rendah.
+Sebagian besar mahasiswa yang lulus memiliki kehadiran yang tinggi, menunjukkan bahwa kehadiran dalam kelas berperan penting dalam keberhasilan akademik.
+Jika ada mahasiswa yang banyak absen tapi tetap lulus, kemungkinan mereka memiliki cara belajar lain seperti belajar mandiri atau akses ke materi kuliah yang cukup
+Menjaga disiplin kehadiran di kelas dan memastikan mahasiswa memiliki akses ke materi jika mereka terpaksa absen bisa membantu meningkatkan kelulusan.
+
+![image](https://github.com/user-attachments/assets/5461e30e-ba90-46b4-bb2d-b0f7e8da2174)
+
+**insight:**
+
+Mahasiswa yang menghabiskan lebih banyak waktu belajar per minggu cenderung memiliki tingkat kelulusan lebih tinggi.
+Jika ada mahasiswa yang belajar lebih banyak tetapi tetap tidak lulus, ini bisa menunjukkan bahwa kualitas belajar lebih penting daripada sekadar jumlah jam belajar.
+Jika distribusinya tidak jauh berbeda, bisa jadi faktor lain lebih dominan dalam menentukan kelulusan, seperti metode belajar atau lingkungan akademik.
+Mendorong mahasiswa untuk memiliki strategi belajar yang efektif, seperti belajar dalam kelompok, menggunakan teknik aktif seperti retrieval practice, dan mengelola waktu dengan baik bisa membantu meningkatkan peluang kelulusan.
+
+**Hasil:**
+
+Dengan mempertimbangkan performa evaluasi, kestabilan prediksi, ketahanan terhadap overfitting, dan kemampuannya dalam menangani data multivariat, Random Forest merupakan pilihan terbaik dan paling tepat untuk diterapkan dalam sistem prediksi kelulusan mahasiswa pada proyek ini. Model ini mampu menjawab kebutuhan utama dalam problem statement: meminimalkan kesalahan prediksi dan memberikan hasil yang akurat serta dapat dipercaya untuk pengambilan keputusan akademik.
+
 
