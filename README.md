@@ -343,6 +343,11 @@ Dataset yang digunakan mencakup berbagai jenis fitur, baik numerik seperti GPA d
 5. Memungkinkan Interpretasi Melalui Feature Importance
 Selain akurasi, Random Forest juga memungkinkan dilakukannya analisis feature importance, yang memberikan wawasan berharga tentang faktor-faktor paling berpengaruh terhadap kelulusan. Ini sangat berguna bagi pengambil kebijakan di institusi pendidikan dalam menyusun strategi intervensi berbasis data.
 
+
+![image](https://github.com/user-attachments/assets/f5a9c0e3-593b-4802-aa3e-0c723003e4ef)
+
+GPA dan absensi adalah faktor paling berpengaruh dalam prediksi. Waktu belajar memiliki dampak sedang. Pendidikan orang tua, bimbingan, dan sukarela kurang signifikan.
+
 **Evaluasi Terhadap Business Understanding**
 
 ✅ Menjawab Problem Statement
@@ -379,9 +384,6 @@ Insight dari feature importance memungkinkan stakeholder seperti dosen, kaprodi,
 Secara keseluruhan, proyek ini berhasil menjawab semua pertanyaan kunci bisnis, mencapai semua tujuan analisis, dan memberikan solusi terukur dan bisa diimplementasikan. Selain menyediakan model prediksi, proyek ini juga menawarkan insight nyata yang bisa dijadikan dasar dalam penyusunan kebijakan akademik berbasis data.
 
 ## Kesimpulan
-![image](https://github.com/user-attachments/assets/f5a9c0e3-593b-4802-aa3e-0c723003e4ef)
-
-GPA dan absensi adalah faktor paling berpengaruh dalam prediksi. Waktu belajar memiliki dampak sedang. Pendidikan orang tua, bimbingan, dan sukarela kurang signifikan.
 
 ![image](https://github.com/user-attachments/assets/86a8bd97-b0de-4c8c-83fa-38f5dd3a4c5a)
 
