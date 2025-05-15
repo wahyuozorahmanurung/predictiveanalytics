@@ -193,29 +193,29 @@ Data preparation sangat penting dalam pipeline machine learning karena memastika
     Proses tuning dilakukan dengan 5-fold cross-validation menggunakan metrik accuracy sebagai skor utama, untuk memilih kombinasi parameter terbaik yang memberikan generalisasi terbaik di data uji.
 
 2. Random Forest
-  Model Random Forest adalah metode ensemble learning yang membangun banyak pohon keputusan dan menggabungkan hasilnya. Untuk model ini digunakan RandomForestClassifier, dan dilakukan hyperparameter tuning   
-  untuk menyesuaikan performa dan stabilitas.
-  ```python
-    param_grid = {
-        'n_estimators': [50, 100],
-        'criterion': ['gini'],
-        'max_depth': [5, 10],
-        'min_samples_split': [2],
-        'min_samples_leaf': [1, 2],
-        'max_features': ['sqrt'],
-        'class_weight': ['balanced']
-  }
-  ```
-  > n_estimators adalah jumlah pohon dalam hutan. Nilai yang diuji adalah 50 dan 100. Semakin banyak pohon, biasanya semakin akurat model, namun juga lebih lambat secara komputasi.
-  > criterion='gini' digunakan untuk mengukur impurity di setiap node. Gini Impurity adalah metode yang umum digunakan karena komputasinya lebih cepat dari entropy.
-  > max_depth dibatasi pada 5 dan 10 untuk mencegah pembentukan pohon yang terlalu dalam dan kompleks, yang dapat menyebabkan overfitting.
-  > min_samples_split=2 adalah nilai default minimum jumlah sampel untuk memisahkan node. Ini membantu menjaga kedalaman pohon agar tidak terlalu tinggi.
-  > min_samples_leaf diuji dengan nilai 1 dan 2, untuk memastikan bahwa setiap daun memiliki cukup data yang mewakili distribusi target.
-  > max_features='sqrt' digunakan agar pada setiap pembentukan node, hanya subset akar kuadrat dari jumlah total fitur yang dipertimbangkan. Ini meningkatkan keragaman antar pohon dan mencegah korelasi antar 
-    fitur.
-  > class_weight='balanced' digunakan agar model memperhatikan ketidakseimbangan antara kelas lulus dan tidak lulus.
+   Model Random Forest adalah metode ensemble learning yang membangun banyak pohon keputusan dan menggabungkan hasilnya. Untuk model ini digunakan RandomForestClassifier, dan dilakukan hyperparameter tuning   
+   untuk menyesuaikan performa dan stabilitas.
+    ```python
+      param_grid = {
+          'n_estimators': [50, 100],
+          'criterion': ['gini'],
+          'max_depth': [5, 10],
+          'min_samples_split': [2],
+          'min_samples_leaf': [1, 2],
+          'max_features': ['sqrt'],
+          'class_weight': ['balanced']
+    }
+    ```
+   > n_estimators adalah jumlah pohon dalam hutan. Nilai yang diuji adalah 50 dan 100. Semakin banyak pohon, biasanya semakin akurat model, namun juga lebih lambat secara komputasi.
+   > criterion='gini' digunakan untuk mengukur impurity di setiap node. Gini Impurity adalah metode yang umum digunakan karena komputasinya lebih cepat dari entropy.
+   > max_depth dibatasi pada 5 dan 10 untuk mencegah pembentukan pohon yang terlalu dalam dan kompleks, yang dapat menyebabkan overfitting.
+   > min_samples_split=2 adalah nilai default minimum jumlah sampel untuk memisahkan node. Ini membantu menjaga kedalaman pohon agar tidak terlalu tinggi.
+   > min_samples_leaf diuji dengan nilai 1 dan 2, untuk memastikan bahwa setiap daun memiliki cukup data yang mewakili distribusi target.
+   > max_features='sqrt' digunakan agar pada setiap pembentukan node, hanya subset akar kuadrat dari jumlah total fitur yang dipertimbangkan. Ini meningkatkan keragaman antar pohon dan mencegah korelasi antar 
+     fitur.
+   > class_weight='balanced' digunakan agar model memperhatikan ketidakseimbangan antara kelas lulus dan tidak lulus.
 
-  Tuning dilakukan menggunakan GridSearchCV dengan 5-fold cross-validation, di mana hasil menunjukkan bahwa Random Forest lebih stabil dan memberikan akurasi tertinggi dibanding model lain.
+    Tuning dilakukan menggunakan GridSearchCV dengan 5-fold cross-validation, di mana hasil menunjukkan bahwa Random Forest lebih stabil dan memberikan akurasi tertinggi dibanding model lain.
 
 3. Support Vector Machine (SVM)
    Model SVM (Support Vector Machine) dibangun dengan menggunakan kelas SVC() dari Scikit-Learn. Karena SVM sangat sensitif terhadap skala data dan parameter, dilakukan hyperparameter tuning untuk menyesuaikan 
@@ -361,24 +361,30 @@ GPA dan absensi adalah faktor paling berpengaruh dalam prediksi. Waktu belajar m
 
 ✅ Menjawab Problem Statement
 
-Bagaimana memprediksi status kelulusan mahasiswa berdasarkan data akademik dan non-akademik?
-- Telah berhasil dibangun model klasifikasi menggunakan Random Forest dengan akurasi tinggi (95.2%) yang mampu memprediksi kelulusan mahasiswa (lulus atau tidak lulus) berdasarkan enam fitur input utama. Evaluasi dengan confusion matrix dan metrik klasifikasi menunjukkan bahwa model ini dapat mengidentifikasi mahasiswa berisiko dengan kesalahan minimum.
-
-Fitur apa yang paling berpengaruh terhadap kelulusan mahasiswa?
-- Berdasarkan Feature Importance dari model Random Forest (terlihat pada grafik), ditemukan bahwa fitur GPA memiliki kontribusi paling besar terhadap prediksi kelulusan, disusul oleh Absences (jumlah ketidakhadiran) dan StudyTimeWeekly (waktu belajar per minggu). Faktor lain seperti pendidikan orang tua, tutoring, dan volunteering memiliki pengaruh yang jauh lebih kecil.
-
-Model machine learning mana yang paling akurat dan sesuai digunakan?
-- Setelah dibandingkan dengan Decision Tree C4.5 dan SVM, model Random Forest dipilih sebagai yang terbaik karena konsisten unggul dalam semua metrik evaluasi utama, serta memberikan hasil yang lebih stabil dan generalisasi lebih baik.
+  1. Bagaimana memprediksi status kelulusan mahasiswa berdasarkan data akademik dan non-akademik?
+  - Telah berhasil dibangun model klasifikasi menggunakan Random Forest dengan akurasi tinggi (95.2%) yang mampu memprediksi kelulusan mahasiswa (lulus atau tidak lulus) berdasarkan enam fitur input utama. 
+    Evaluasi dengan confusion matrix dan metrik klasifikasi menunjukkan bahwa model ini dapat mengidentifikasi mahasiswa berisiko dengan kesalahan minimum.
+  
+  2. Fitur apa yang paling berpengaruh terhadap kelulusan mahasiswa?
+  - Berdasarkan Feature Importance dari model Random Forest (terlihat pada grafik), ditemukan bahwa fitur GPA memiliki kontribusi paling besar terhadap prediksi kelulusan, disusul oleh Absences (jumlah 
+    ketidakhadiran) dan StudyTimeWeekly (waktu belajar per minggu). Faktor lain seperti pendidikan orang tua, tutoring, dan volunteering memiliki pengaruh yang jauh lebih kecil.
+  
+  3. Model machine learning mana yang paling akurat dan sesuai digunakan?
+  - Setelah dibandingkan dengan Decision Tree C4.5 dan SVM, model Random Forest dipilih sebagai yang terbaik karena konsisten unggul dalam semua metrik evaluasi utama, serta memberikan hasil yang lebih stabil 
+    dan generalisasi lebih baik.
 
 🎯 Mencapai Goals
-Membangun model prediksi kelulusan mahasiswa
-- Tujuan ini telah dicapai dengan baik menggunakan model Random Forest, yang mampu memberikan prediksi akurat terhadap status kelulusan mahasiswa pada data uji.
-
-Mengidentifikasi variabel yang paling berpengaruh
-- Tujuan ini dicapai melalui analisis feature importance. Hasil menunjukkan bahwa GPA dan Absences adalah dua indikator paling penting dalam menentukan kelulusan, memberikan insight yang relevan bagi kebijakan akademik.
-
+   Membangun model prediksi kelulusan mahasiswa
+   
+   - Tujuan ini telah dicapai dengan baik menggunakan model Random Forest, yang mampu memberikan prediksi akurat terhadap status kelulusan mahasiswa pada data uji.
+      Mengidentifikasi variabel yang paling berpengaruh
+    
+   - Tujuan ini dicapai melalui analisis feature importance. Hasil menunjukkan bahwa GPA dan Absences adalah dua indikator paling penting dalam menentukan kelulusan, memberikan insight yang relevan bagi 
+      kebijakan akademik.
+     
 Membandingkan beberapa algoritma klasifikasi
-- Tiga algoritma diuji dan dibandingkan secara adil menggunakan GridSearchCV. Random Forest unggul secara konsisten dan dipilih sebagai model final.
+    
+   - Tiga algoritma diuji dan dibandingkan secara adil menggunakan GridSearchCV. Random Forest unggul secara konsisten dan dipilih sebagai model final.
 
 📈 Dampak dari Solution Statement
 
