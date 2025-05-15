@@ -34,7 +34,6 @@ Untuk meningkatkan efisiensi akademik dan mendukung mahasiswa agar dapat lulus t
 - Membangun model klasifikasi yang dapat memprediksi status kelulusan mahasiswa dengan tingkat akurasi yang baik berdasarkan fitur-fitur yang tersedia dalam dataset.
 - Mengidentifikasi variabel-variabel utama yang berpengaruh signifikan terhadap status kelulusan mahasiswa, sehingga dapat dijadikan dasar untuk kebijakan akademik.
 - Membandingkan performa beberapa algoritma machine learning (Decision Tree C4.5, Random Forest, dan SVM) dan memilih model dengan evaluasi terbaik berdasarkan metrik seperti akurasi, precision, recall, dan f1-score.
-- Semua poin di atas harus diuraikan dengan jelas. Anda bebas menuliskan berapa pernyataan masalah dan juga goals yang diinginkan.
 
 
 ### Solution statements
@@ -53,7 +52,7 @@ Untuk meningkatkan efisiensi akademik dan mendukung mahasiswa agar dapat lulus t
 Proyek ini menggunakan dataset yang diperoleh dari Kaggle dengan judul "Student Performance Dataset" yang dapat diakses melalui tautan berikut:
 🔗 https://www.kaggle.com/datasets/rabieelkharoua/students-performance-dataset 
 
-Dataset ini menyajikan informasi lengkap tentang karakteristik mahasiswa yang mencakup aspek akademik, sosial, serta dukungan dari lingkungan sekitarnya. Data ini digunakan untuk membangun model prediktif yang menentukan status kelulusan mahasiswa berdasarkan fitur-fitur yang tersedia.
+Dataset ini menyajikan informasi lengkap dengan Jumlah data yang tersedia adalah 2393 baris dan 15 kolom tentang karakteristik mahasiswa yang mencakup aspek akademik, sosial, serta dukungan dari lingkungan sekitarnya. Data ini digunakan untuk membangun model prediktif yang menentukan status kelulusan mahasiswa berdasarkan fitur-fitur yang tersedia. 
 
 ### Variabel-variabel pada Restaurant UCI dataset adalah sebagai berikut:
 - StudentID: ID unik untuk setiap mahasiswa.
