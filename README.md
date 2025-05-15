@@ -42,10 +42,10 @@ Untuk meningkatkan efisiensi akademik dan mendukung mahasiswa agar dapat lulus t
 - Melakukan tuning hyperparameter menggunakan GridSearchCV untuk setiap algoritma agar memperoleh performa model yang optimal dan mengurangi risiko overfitting/underfitting.
 
 - Menggunakan metrik evaluasi yang terukur, seperti:
-  A. Accuracy: untuk mengukur keseluruhan kinerja model.
-  B.Precision dan Recall: untuk mengevaluasi model terhadap kelas yang tidak seimbang.
-  C.F1-score: untuk menyeimbangkan precision dan recall dalam satu metrik.
-  D.Confusion matrix: untuk melihat distribusi kesalahan klasifikasi model.
+  - Accuracy: untuk mengukur keseluruhan kinerja model.
+  - Precision dan Recall: untuk mengevaluasi model terhadap kelas yang tidak seimbang.
+  - F1-score: untuk menyeimbangkan precision dan recall dalam satu metrik.
+  - Confusion matrix: untuk melihat distribusi kesalahan klasifikasi model.
 - Melakukan analisis feature importance (khususnya pada model Random Forest) untuk menentukan fitur mana yang paling berpengaruh terhadap status kelulusan.
 
 ## Data Understanding
@@ -107,121 +107,131 @@ Data preparation sangat penting dalam pipeline machine learning karena memastika
    Outlier dapat memengaruhi performa model, terutama pada algoritma berbasis jarak atau statistik. Mendeteksinya memberi opsi untuk menghapus, mengubah, atau mempertahankannya berdasarkan konteks data.
 
 3. Encoding Variabel Kategorikal
-   Beberapa fitur memiliki nilai kategorikal seperti "Gender", "Ethnicity", "ParentalEducation", "Tutoring", "ParentalSupport", "Extracurricular", "Sports", "Music", dan "Volunteering". Variabel-variabel ini diubah menjadi format numerik menggunakan Label Encoding dari sklearn.preprocessing.LabelEncoder.
- ```python
-    encoder = LabelEncoder()
-for col in categorical_columns:
-    df[col] = encoder.fit_transform(df[col])
- ```
-  Alasan:
-   Sebagian besar algoritma machine learning tidak dapat memproses nilai string secara langsung. Oleh karena itu, encoding diperlukan untuk mengubah data kategorikal menjadi representasi numerik yang bisa diproses model.
+   Beberapa fitur memiliki nilai kategorikal seperti "Gender", "Ethnicity", "ParentalEducation", "Tutoring", "ParentalSupport", "Extracurricular", "Sports", "Music", dan "Volunteering". Variabel-variabel ini 
+   diubah menjadi format numerik menggunakan Label Encoding dari sklearn.preprocessing.LabelEncoder.
+   ```python
+      encoder = LabelEncoder()
+    for col in categorical_columns:
+      df[col] = encoder.fit_transform(df[col])
+   ```
+   Alasan:
+   Sebagian besar algoritma machine learning tidak dapat memproses nilai string secara langsung. Oleh karena itu, encoding diperlukan untuk mengubah data kategorikal menjadi representasi numerik yang bisa   
+   diproses model.
    
 4. Normalisasi Fitur Numerik
    Fitur numerik seperti StudyTimeWeekly, Absences, dan GPA dinormalisasi menggunakan MinMaxScaler dari sklearn. Skala setiap nilai menjadi rentang antara 0 dan 1.
    
-```python
-   scaler = MinMaxScaler()
-df[numerical_cols] = scaler.fit_transform(df[numerical_cols])
- ```
-Alasan:
-Normalisasi membantu mempercepat proses pelatihan dan meningkatkan performa model, terutama untuk algoritma yang sensitif terhadap skala seperti SVM dan KNN.
+   ```python
+     scaler = MinMaxScaler()
+    df[numerical_cols] = scaler.fit_transform(df[numerical_cols])
+   ```
+   Alasan:
+   Normalisasi membantu mempercepat proses pelatihan dan meningkatkan performa model, terutama untuk algoritma yang sensitif terhadap skala seperti SVM dan KNN.
 
 5. Seleksi Fitur dan Pembuatan Dataset Terpilih
    Setelah melakukan eksplorasi korelasi, dipilih beberapa fitur penting yang memiliki hubungan kuat dengan target (GraduationStatus), yaitu:
    Data kemudian disimpan dalam file selected_features.csv untuk memudahkan proses selanjutnya.
-```python
-   selected_columns = ["StudyTimeWeekly", "Volunteering", "Tutoring", "ParentalEducation", "Absences", "GPA", "GradeClass"]
- ```
-  Alasan:
-  Pemilihan fitur penting (feature selection) membantu meningkatkan performa model, mengurangi overfitting, dan mempercepat waktu pelatihan dengan menghilangkan fitur yang kurang relevan.
+   ```python
+     selected_columns = ["StudyTimeWeekly", "Volunteering", "Tutoring", "ParentalEducation", "Absences", "GPA", "GradeClass"]
+   ```
+   Alasan:
+   Pemilihan fitur penting (feature selection) membantu meningkatkan performa model, mengurangi overfitting, dan mempercepat waktu pelatihan dengan menghilangkan fitur yang kurang relevan.
 
 6. Pembuatan Label Target (GraduationStatus)
    Label biner GraduationStatus dibuat dari kolom GradeClass. Jika nilai kelas termasuk A, B, atau C (dalam bentuk numerik: 0, 1, 2), maka mahasiswa dianggap lulus (1), selain itu dianggap tidak lulus (0).
-```python
-  df["GraduationStatus"] = df["GradeClass"].apply(lambda x: 1 if x in [0, 1, 2] else 0)
- ```
-  Alasan:
-  Label ini digunakan sebagai target variabel dalam klasifikasi biner untuk memprediksi apakah seorang mahasiswa akan lulus atau tidak.
+   ```python
+    df["GraduationStatus"] = df["GradeClass"].apply(lambda x: 1 if x in [0, 1, 2] else 0)
+   ```
+   Alasan:
+   Label ini digunakan sebagai target variabel dalam klasifikasi biner untuk memprediksi apakah seorang mahasiswa akan lulus atau tidak.
 
 7. Pembagian Data: Training dan Testing
    Data kemudian dipisahkan menjadi data latih dan data uji menggunakan fungsi train_test_split() dengan rasio 80:20 dan stratifikasi terhadap target.
-```python
-   X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, stratify=y, random_state=42)
- ```
+   ```python
+     X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, stratify=y, random_state=42)
+    ```
 8. Penyesuaian Tipe Data
-   Fitur kategorikal yang telah di-encode seperti "Volunteering", "Tutoring", dan "ParentalEducation" dikonversi ke tipe float64 untuk memastikan konsistensi dengan fitur numerik lainnya, terutama agar   kompatibel dengan algoritma tertentu.
+   Fitur kategorikal yang telah di-encode seperti "Volunteering", "Tutoring", dan "ParentalEducation" dikonversi ke tipe float64 untuk memastikan konsistensi dengan fitur numerik lainnya, terutama agar       
+   kompatibel dengan algoritma tertentu.
    ```python
    X[col] = LabelEncoder().fit_transform(X[col]).astype(float)
     ```
-  Alasan:
-  Beberapa model memerlukan format numerik dengan tipe data float untuk perhitungan jarak atau matriks kernel, seperti pada SVM.
+   Alasan:
+   Beberapa model memerlukan format numerik dengan tipe data float untuk perhitungan jarak atau matriks kernel, seperti pada SVM.
   
 ## Modeling
-Tahapan modeling bertujuan untuk membangun model prediktif yang dapat menentukan status kelulusan mahasiswa (lulus atau tidak) berdasarkan fitur-fitur yang telah diproses sebelumnya. Dalam proyek ini digunakan tiga algoritma machine learning untuk dibandingkan:
-- Decision Tree C4.5,
-- Random Forest, dan
-- Support Vector Machine (SVM).
-Setiap algoritma diuji menggunakan stratified train-test split (80:20) dan dilakukan tuning hyperparameter menggunakan GridSearchCV untuk menemukan parameter optimal yang menghasilkan akurasi terbaik.
+  Tahapan modeling bertujuan untuk membangun model prediktif yang dapat menentukan status kelulusan mahasiswa (lulus atau tidak) berdasarkan fitur-fitur yang telah diproses sebelumnya. Dalam proyek ini digunakan 
+  tiga algoritma machine learning untuk dibandingkan:
+  - Decision Tree C4.5,
+  - Random Forest, dan
+  - Support Vector Machine (SVM).
+  Setiap algoritma diuji menggunakan stratified train-test split (80:20) dan dilakukan tuning hyperparameter menggunakan GridSearchCV untuk menemukan parameter optimal yang menghasilkan akurasi terbaik.
 
 1. Decision Tree C4.5 – Parameter dan Tuning
-   Model Decision Tree C4.5 dibangun menggunakan algoritma DecisionTreeClassifier dari pustaka Scikit-Learn. Untuk menghasilkan model yang optimal dan tidak overfitting, dilakukan proses hyperparameter tuning menggunakan GridSearchCV dengan beberapa kombinasi parameter penting.
-```python
-   param_grid = {
-    'criterion': ['entropy'],
-    'splitter': ['best'],
-    'max_depth': [3, 5, 10, 15, None],
-    'min_samples_split': [2, 5, 10, 20],
-    'min_samples_leaf': [1, 2, 5, 10],
-    'max_features': [None, 'sqrt', 'log2'],
-    'class_weight': ['balanced'],
-    'ccp_alpha': [0.0, 0.01, 0.05]
-}
-```
-> criterion='entropy' digunakan untuk mengukur kualitas pemisahan menggunakan informasi gain, sesuai dengan karakteristik C4.5 yang berbasis pada entropi.
-> splitter='best' mengarahkan algoritma untuk memilih pemisahan terbaik pada setiap node.
-> max_depth disesuaikan dalam beberapa pilihan seperti 3, 5, 10, 15, hingga None (tanpa batas), untuk menguji kedalaman pohon yang paling optimal. Semakin dalam pohon, semakin kompleks modelnya.
-> min_samples_split dan min_samples_leaf mengontrol jumlah minimum sampel yang diperlukan untuk memisahkan node dan membentuk daun. Nilai seperti 2, 5, 10, dan 20 diuji untuk mencegah pembelahan yang terlalu agresif dan mengurangi overfitting.
-> max_features mengatur jumlah fitur yang dipertimbangkan saat mencari pemisahan terbaik. Pengaturan seperti None, 'sqrt', dan 'log2' diuji untuk meningkatkan keragaman dalam pemisahan fitur.
-> class_weight='balanced' digunakan untuk menyesuaikan bobot kelas jika terjadi ketidakseimbangan antara kelas lulus dan tidak lulus.
-> Terakhir, ccp_alpha digunakan sebagai parameter pruning post-training (cost-complexity pruning), dengan nilai 0.0, 0.01, dan 0.05 untuk mengurangi kompleksitas pohon dan mencegah overfitting.
-Proses tuning dilakukan dengan 5-fold cross-validation menggunakan metrik accuracy sebagai skor utama, untuk memilih kombinasi parameter terbaik yang memberikan generalisasi terbaik di data uji.
+   Model Decision Tree C4.5 dibangun menggunakan algoritma DecisionTreeClassifier dari pustaka Scikit-Learn. Untuk menghasilkan model yang optimal dan tidak overfitting, dilakukan proses hyperparameter tuning 
+   menggunakan GridSearchCV dengan beberapa kombinasi parameter penting.
+    ```python
+       param_grid = {
+        'criterion': ['entropy'],
+        'splitter': ['best'],
+        'max_depth': [3, 5, 10, 15, None],
+        'min_samples_split': [2, 5, 10, 20],
+        'min_samples_leaf': [1, 2, 5, 10],
+        'max_features': [None, 'sqrt', 'log2'],
+        'class_weight': ['balanced'],
+        'ccp_alpha': [0.0, 0.01, 0.05]
+    }
+    ```
+    > criterion='entropy' digunakan untuk mengukur kualitas pemisahan menggunakan informasi gain, sesuai dengan karakteristik C4.5 yang berbasis pada entropi.
+    > splitter='best' mengarahkan algoritma untuk memilih pemisahan terbaik pada setiap node.
+    > max_depth disesuaikan dalam beberapa pilihan seperti 3, 5, 10, 15, hingga None (tanpa batas), untuk menguji kedalaman pohon yang paling optimal. Semakin dalam pohon, semakin kompleks modelnya.
+    > min_samples_split dan min_samples_leaf mengontrol jumlah minimum sampel yang diperlukan untuk memisahkan node dan membentuk daun. Nilai seperti 2, 5, 10, dan 20 diuji untuk mencegah pembelahan yang terlalu 
+      agresif dan mengurangi overfitting.
+    > max_features mengatur jumlah fitur yang dipertimbangkan saat mencari pemisahan terbaik. Pengaturan seperti None, 'sqrt', dan 'log2' diuji untuk meningkatkan keragaman dalam pemisahan fitur.
+    > class_weight='balanced' digunakan untuk menyesuaikan bobot kelas jika terjadi ketidakseimbangan antara kelas lulus dan tidak lulus.
+    > Terakhir, ccp_alpha digunakan sebagai parameter pruning post-training (cost-complexity pruning), dengan nilai 0.0, 0.01, dan 0.05 untuk mengurangi kompleksitas pohon dan mencegah overfitting.
+    Proses tuning dilakukan dengan 5-fold cross-validation menggunakan metrik accuracy sebagai skor utama, untuk memilih kombinasi parameter terbaik yang memberikan generalisasi terbaik di data uji.
 
 2. Random Forest
-  Model Random Forest adalah metode ensemble learning yang membangun banyak pohon keputusan dan menggabungkan hasilnya. Untuk model ini digunakan RandomForestClassifier, dan dilakukan hyperparameter tuning   untuk menyesuaikan performa dan stabilitas.
-```python
-param_grid = {
-    'n_estimators': [50, 100],
-    'criterion': ['gini'],
-    'max_depth': [5, 10],
-    'min_samples_split': [2],
-    'min_samples_leaf': [1, 2],
-    'max_features': ['sqrt'],
-    'class_weight': ['balanced']
-}
-```
-> n_estimators adalah jumlah pohon dalam hutan. Nilai yang diuji adalah 50 dan 100. Semakin banyak pohon, biasanya semakin akurat model, namun juga lebih lambat secara komputasi.
-> criterion='gini' digunakan untuk mengukur impurity di setiap node. Gini Impurity adalah metode yang umum digunakan karena komputasinya lebih cepat dari entropy.
-> max_depth dibatasi pada 5 dan 10 untuk mencegah pembentukan pohon yang terlalu dalam dan kompleks, yang dapat menyebabkan overfitting.
-> min_samples_split=2 adalah nilai default minimum jumlah sampel untuk memisahkan node. Ini membantu menjaga kedalaman pohon agar tidak terlalu tinggi.
-> min_samples_leaf diuji dengan nilai 1 dan 2, untuk memastikan bahwa setiap daun memiliki cukup data yang mewakili distribusi target.
-> max_features='sqrt' digunakan agar pada setiap pembentukan node, hanya subset akar kuadrat dari jumlah total fitur yang dipertimbangkan. Ini meningkatkan keragaman antar pohon dan mencegah korelasi antar fitur.
-> class_weight='balanced' digunakan agar model memperhatikan ketidakseimbangan antara kelas lulus dan tidak lulus.
+  Model Random Forest adalah metode ensemble learning yang membangun banyak pohon keputusan dan menggabungkan hasilnya. Untuk model ini digunakan RandomForestClassifier, dan dilakukan hyperparameter tuning   
+  untuk menyesuaikan performa dan stabilitas.
+  ```python
+    param_grid = {
+        'n_estimators': [50, 100],
+        'criterion': ['gini'],
+        'max_depth': [5, 10],
+        'min_samples_split': [2],
+        'min_samples_leaf': [1, 2],
+        'max_features': ['sqrt'],
+        'class_weight': ['balanced']
+  }
+  ```
+  > n_estimators adalah jumlah pohon dalam hutan. Nilai yang diuji adalah 50 dan 100. Semakin banyak pohon, biasanya semakin akurat model, namun juga lebih lambat secara komputasi.
+  > criterion='gini' digunakan untuk mengukur impurity di setiap node. Gini Impurity adalah metode yang umum digunakan karena komputasinya lebih cepat dari entropy.
+  > max_depth dibatasi pada 5 dan 10 untuk mencegah pembentukan pohon yang terlalu dalam dan kompleks, yang dapat menyebabkan overfitting.
+  > min_samples_split=2 adalah nilai default minimum jumlah sampel untuk memisahkan node. Ini membantu menjaga kedalaman pohon agar tidak terlalu tinggi.
+  > min_samples_leaf diuji dengan nilai 1 dan 2, untuk memastikan bahwa setiap daun memiliki cukup data yang mewakili distribusi target.
+  > max_features='sqrt' digunakan agar pada setiap pembentukan node, hanya subset akar kuadrat dari jumlah total fitur yang dipertimbangkan. Ini meningkatkan keragaman antar pohon dan mencegah korelasi antar 
+    fitur.
+  > class_weight='balanced' digunakan agar model memperhatikan ketidakseimbangan antara kelas lulus dan tidak lulus.
 
-Tuning dilakukan menggunakan GridSearchCV dengan 5-fold cross-validation, di mana hasil menunjukkan bahwa Random Forest lebih stabil dan memberikan akurasi tertinggi dibanding model lain.
+  Tuning dilakukan menggunakan GridSearchCV dengan 5-fold cross-validation, di mana hasil menunjukkan bahwa Random Forest lebih stabil dan memberikan akurasi tertinggi dibanding model lain.
 
 3. Support Vector Machine (SVM)
-   Model SVM (Support Vector Machine) dibangun dengan menggunakan kelas SVC() dari Scikit-Learn. Karena SVM sangat sensitif terhadap skala data dan parameter, dilakukan hyperparameter tuning untuk menyesuaikan dengan karakteristik data.
-```python
-   param_grid = {
-    'C': [0.1, 1, 10, 100],
-    'kernel': ['linear', 'rbf', 'poly', 'sigmoid'],
-    'gamma': ['scale', 'auto']
-}
-```
+   Model SVM (Support Vector Machine) dibangun dengan menggunakan kelas SVC() dari Scikit-Learn. Karena SVM sangat sensitif terhadap skala data dan parameter, dilakukan hyperparameter tuning untuk menyesuaikan 
+   dengan karakteristik data.
+    ```python
+       param_grid = {
+        'C': [0.1, 1, 10, 100],
+        'kernel': ['linear', 'rbf', 'poly', 'sigmoid'],
+        'gamma': ['scale', 'auto']
+    }
+    ```
 
-> C adalah parameter regularisasi yang mengontrol keseimbangan antara klasifikasi sempurna data pelatihan dan margin maksimum. Nilai yang diuji adalah 0.1, 1, 10, dan 100. Nilai C kecil membuat margin lebih lebar (lebih toleran terhadap kesalahan), sedangkan nilai besar mencoba mengklasifikasikan semua data pelatihan dengan benar.
-> kernel menentukan jenis fungsi kernel yang digunakan untuk memproyeksikan data ke dimensi yang lebih tinggi. Kernel yang diuji meliputi 'linear', 'rbf', 'poly', dan 'sigmoid'.
-> gamma adalah koefisien kernel untuk kernel 'rbf', 'poly', dan 'sigmoid'. Nilai 'scale' dan 'auto' diuji. Gamma menentukan jangkauan pengaruh satu titik data—gamma tinggi menyebabkan model lebih fokus pada titik-titik dekat (berisiko overfitting), sedangkan gamma rendah membuat model lebih umum.
+   > C adalah parameter regularisasi yang mengontrol keseimbangan antara klasifikasi sempurna data pelatihan dan margin maksimum. Nilai yang diuji adalah 0.1, 1, 10, dan 100. Nilai C kecil membuat margin lebih        lebar (lebih toleran terhadap kesalahan), sedangkan nilai besar mencoba mengklasifikasikan semua data pelatihan dengan benar.
+   > kernel menentukan jenis fungsi kernel yang digunakan untuk memproyeksikan data ke dimensi yang lebih tinggi. Kernel yang diuji meliputi 'linear', 'rbf', 'poly', dan 'sigmoid'.
+   > gamma adalah koefisien kernel untuk kernel 'rbf', 'poly', dan 'sigmoid'. Nilai 'scale' dan 'auto' diuji. Gamma menentukan jangkauan pengaruh satu titik data—gamma tinggi menyebabkan model lebih fokus pada   
+     titik-titik dekat (berisiko overfitting), sedangkan gamma rendah membuat model lebih umum.
 
 Karena SVM membutuhkan data yang ternormalisasi, seluruh fitur numerik telah diskalakan menggunakan MinMaxScaler sebelumnya. Setelah tuning, SVM memberikan performa baik, namun dengan sedikit peningkatan kesalahan klasifikasi negatif.
 
