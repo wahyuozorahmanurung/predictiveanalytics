@@ -76,7 +76,7 @@ Beberapa tahapan eksplorasi data telah dilakukan untuk memahami karakteristik da
 
 ![image](https://github.com/user-attachments/assets/9e22b950-2a3f-4f5f-a8ff-104fd8bfc639)
   
-dan menghilangkan data duplikat
+dan mencek duplikat
 
 ![image](https://github.com/user-attachments/assets/54b8daf9-05b5-4db7-949d-5f645cc70ab9)
 
@@ -97,16 +97,19 @@ Variabel numerik seperti GPA, StudyTimeWeekly, dan Absences diperiksa menggunaka
 Data preparation sangat penting dalam pipeline machine learning karena memastikan data dalam kondisi bersih, terstruktur, dan siap digunakan oleh algoritma untuk pelatihan dan prediksi. Proses ini dilakukan secara bertahap dan sistematis agar menghasilkan model yang akurat dan dapat diinterpretasikan dengan baik.
 
 1. Memeriksa Struktur Data dan Informasi Umum
-   Langkah pertama dilakukan dengan fungsi df.info() dan df.isnull().sum() untuk memahami tipe data dan memastikan tidak ada nilai yang hilang (missing value). Selain itu, dilakukan pengecekan duplikasi     menggunakan df.duplicated().
+   Langkah pertama dilakukan dengan fungsi df.info() dan df.isnull().sum() untuk memahami tipe data dan memastikan tidak ada nilai yang hilang (missing value). Selain itu, dilakukan pengecekan duplikasi     menggunakan df.duplicated(). Pada hal ini tidak ada yang perlu dibersihkan karena data tidak ada yang missing value dan berduplikat
   Alasan:
   Menjamin integritas data sangat penting sebelum analisis dilakukan. Kehadiran nilai hilang atau duplikat dapat menyebabkan bias atau error pada proses modeling.
 
 2. Pendeteksian dan Visualisasi Outlier
    Outlier pada variabel numerik (StudyTimeWeekly, Absences, dan GPA) diperiksa menggunakan metode Interquartile Range (IQR). Nilai batas bawah dan atas dihitung, dan data di luar rentang ini dianggap sebagai   outlier. Visualisasi boxplot digunakan untuk melihat distribusi dan keberadaan outlier secara visual.
+   
+   ![image](https://github.com/user-attachments/assets/4d9eb0f1-78d6-437a-b74b-d1d1701e9978)
+
    Alasan:
    Outlier dapat memengaruhi performa model, terutama pada algoritma berbasis jarak atau statistik. Mendeteksinya memberi opsi untuk menghapus, mengubah, atau mempertahankannya berdasarkan konteks data.
 
-3. Encoding Variabel Kategorikal
+4. Encoding Variabel Kategorikal
    Beberapa fitur memiliki nilai kategorikal seperti "Gender", "Ethnicity", "ParentalEducation", "Tutoring", "ParentalSupport", "Extracurricular", "Sports", "Music", dan "Volunteering". Variabel-variabel ini 
    diubah menjadi format numerik menggunakan Label Encoding dari sklearn.preprocessing.LabelEncoder.
    ```python
@@ -118,7 +121,7 @@ Data preparation sangat penting dalam pipeline machine learning karena memastika
    Sebagian besar algoritma machine learning tidak dapat memproses nilai string secara langsung. Oleh karena itu, encoding diperlukan untuk mengubah data kategorikal menjadi representasi numerik yang bisa   
    diproses model.
    
-4. Normalisasi Fitur Numerik
+5. Normalisasi Fitur Numerik
    Fitur numerik seperti StudyTimeWeekly, Absences, dan GPA dinormalisasi menggunakan MinMaxScaler dari sklearn. Skala setiap nilai menjadi rentang antara 0 dan 1.
    
    ```python
@@ -128,7 +131,7 @@ Data preparation sangat penting dalam pipeline machine learning karena memastika
    Alasan:
    Normalisasi membantu mempercepat proses pelatihan dan meningkatkan performa model, terutama untuk algoritma yang sensitif terhadap skala seperti SVM dan KNN.
 
-5. Seleksi Fitur dan Pembuatan Dataset Terpilih
+6. Seleksi Fitur dan Pembuatan Dataset Terpilih
    Setelah melakukan eksplorasi korelasi, dipilih beberapa fitur penting yang memiliki hubungan kuat dengan target (GraduationStatus), yaitu:
    Data kemudian disimpan dalam file selected_features.csv untuk memudahkan proses selanjutnya.
    ```python
@@ -137,7 +140,7 @@ Data preparation sangat penting dalam pipeline machine learning karena memastika
    Alasan:
    Pemilihan fitur penting (feature selection) membantu meningkatkan performa model, mengurangi overfitting, dan mempercepat waktu pelatihan dengan menghilangkan fitur yang kurang relevan.
 
-6. Pembuatan Label Target (GraduationStatus)
+7. Pembuatan Label Target (GraduationStatus)
    Label biner GraduationStatus dibuat dari kolom GradeClass. Jika nilai kelas termasuk A, B, atau C (dalam bentuk numerik: 0, 1, 2), maka mahasiswa dianggap lulus (1), selain itu dianggap tidak lulus (0).
    ```python
     df["GraduationStatus"] = df["GradeClass"].apply(lambda x: 1 if x in [0, 1, 2] else 0)
@@ -145,19 +148,11 @@ Data preparation sangat penting dalam pipeline machine learning karena memastika
    Alasan:
    Label ini digunakan sebagai target variabel dalam klasifikasi biner untuk memprediksi apakah seorang mahasiswa akan lulus atau tidak.
 
-7. Pembagian Data: Training dan Testing
+8. Pembagian Data: Training dan Testing
    Data kemudian dipisahkan menjadi data latih dan data uji menggunakan fungsi train_test_split() dengan rasio 80:20 dan stratifikasi terhadap target.
    ```python
      X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, stratify=y, random_state=42)
     ```
-8. Penyesuaian Tipe Data
-   Fitur kategorikal yang telah di-encode seperti "Volunteering", "Tutoring", dan "ParentalEducation" dikonversi ke tipe float64 untuk memastikan konsistensi dengan fitur numerik lainnya, terutama agar       
-   kompatibel dengan algoritma tertentu.
-   ```python
-   X[col] = LabelEncoder().fit_transform(X[col]).astype(float)
-    ```
-   Alasan:
-   Beberapa model memerlukan format numerik dengan tipe data float untuk perhitungan jarak atau matriks kernel, seperti pada SVM.
   
 ## Modeling
   Tahapan modeling bertujuan untuk membangun model prediktif yang dapat menentukan status kelulusan mahasiswa (lulus atau tidak) berdasarkan fitur-fitur yang telah diproses sebelumnya. Dalam proyek ini digunakan 
