@@ -102,7 +102,7 @@ Data preparation sangat penting dalam pipeline machine learning karena memastika
   Menjamin integritas data sangat penting sebelum analisis dilakukan. Kehadiran nilai hilang atau duplikat dapat menyebabkan bias atau error pada proses modeling.
 
 2. Pendeteksian dan Visualisasi Outlier
-   Outlier pada variabel numerik (StudyTimeWeekly, Absences, dan GPA) diperiksa menggunakan metode Interquartile Range (IQR). Nilai batas bawah dan atas dihitung, dan data di luar rentang ini dianggap sebagai   outlier. Visualisasi boxplot digunakan untuk melihat distribusi dan keberadaan outlier secara visual.
+   Outlier pada variabel numerik (StudyTimeWeekly, Absences, dan GPA) diperiksa menggunakan metode Interquartile Range (IQR). Nilai batas bawah dan atas dihitung, dan data di luar rentang ini dianggap sebagai   outlier.
    
    ![image](https://github.com/user-attachments/assets/4d9eb0f1-78d6-437a-b74b-d1d1701e9978)
 
